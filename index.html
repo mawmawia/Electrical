@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electrical - Book Electrician</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#c2410c">
+<style>
+* { box-sizing: border-box; }
+body { font-family: Arial; margin: 0; padding: 15px 15px 120px; background: #fff7ed; }
+h1 { text-align: center; color: #c2410c; margin: 5px 0; font-size: 26px; }
+.sub { text-align: center; color: #555; font-size: 14px; margin-bottom: 15px; }
+.card { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 5px #ddd; }
+label { font-weight: bold; font-size: 14px; display: block; margin-top: 14px; }
+select, input, textarea { width: 100%; padding: 13px; margin: 7px 0; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; background: white; }
+.type-btn { width: 48%; padding: 14px; border: 2px solid #ddd; background: #eee; border-radius: 10px; font-size: 15px; font-weight: bold; cursor: pointer; }
+.type-btn.active { background: #c2410c; color: white; border-color: #c2410c; }
+#preview { width: 100%; border-radius: 10px; margin-top: 10px; display: none; }
+.price-box { background: #fef3c7; padding: 15px; border-radius: 10px; text-align: center; margin-top: 15px; }
+.price-big { font-size: 22px; font-weight: bold; color: #92400e; }
+.brand { font-size: 13px; color: #555; margin-top: 5px; }
+#bookBtn { position: fixed; bottom: 0; left: 0; right: 0; background: #16a34a; color: white; padding: 17px; text-align: center; font-size: 17px; font-weight: bold; border: none; width: 100%; }
+.upload-status { font-size: 13px; color: green; margin-top: 5px; }
+</style>
+</head>
+<body>
+<h1>⚡ Lamka Electrical</h1>
+<p class="sub">Upload Photo • Get Price • Get Slot Number • Book</p>
+
+<div class="card">
+<label>1. What do you need?</label>
+<div style="display:flex; justify-content:space-between;">
+<button type="button" class="type-btn active" id="btnSmall" onclick="setType('small')">🔧 Small Repair<br><span style="font-size:12px;font-weight:normal;">Fan / Socket / Box</span></button>
+<button type="button" class="type-btn" id="btnWiring" onclick="setType('wiring')">🏠 House Wiring<br><span style="font-size:12px;font-weight:normal;">Full House / New House</span></button>
+</div>
+
+<div id="smallSection">
+<label>2. Select Small Repair</label>
+<select id="problem" onchange="updatePrice()">
+<option value="Ceiling Fan Repair / Regulator Change|450|Havells / Anchor Regulator + Service">🌀 Ceiling Fan Repair / Regulator - ₹450</option>
+<option value="Fan Installation (New Fan)|550|Havells / Orient Fan Fitting + Anchor Regulator">🌀 New Fan Installation - ₹550</option>
+<option value="Switch / Socket Repair|280|Anchor Roma / Havells Switch">🔌 Switch / Socket Repair - ₹280</option>
+<option value="Switch Board / Box Change|650|Anchor Roma 6-Module Board + Havells Switches">🧰 Switch Board / Box Change - ₹650</option>
+<option value="Changeover Switch Install|1200|Havells / Anchor Changeover 63A">🔀 Changeover Switch Install - ₹1,200</option>
+<option value="MCB / Main Switch Repair|700|Havells / Schneider MCB">⚡ MCB / Main Switch - ₹700</option>
+<option value="Light / Tube / LED Fitting|300|Polycab / Havells LED + Holder">💡 Light / LED Fitting - ₹300</option>
+<option value="Inverter Wiring / Point|800|Polycab Wire + Anchor Socket">🔋 Inverter Point / Wiring - ₹800</option>
+<option value="Door Bell / Exhaust Fan|350|Anchor Bell / Havells Exhaust Fan">🔔 Door Bell / Exhaust Fan - ₹350</option>
+<option value="Water Motor / Pump Point|900|Polycab Wire + Havells MCB">💧 Motor / Pump Point - ₹900</option>
+</select>
+</div>
+
+<div id="wiringSection" style="display:none;">
+<label>2. House Wiring Details</label>
+<select id="wiringType">
+<option value="New House Full Wiring">New House Full Wiring</option>
+<option value="Old House Re-Wiring">Old House Re-Wiring</option>
+<option value="Single Room Wiring">Single Room Wiring</option>
+<option value="Shop / Office Wiring">Shop / Office Wiring</option>
+</select>
+<p style="font-size:13px;color:#555;background:#fef3c7;padding:10px;border-radius:8px;">For House Wiring, price depends on house size, rooms, wire length. Upload photo of house + interior. We will visit and negotiate on WhatsApp. No fixed price.</p>
+</div>
+
+<label>3. Upload Photo</label>
+<input type="file" id="photo" accept="image/*">
+<div id="uploadStatus" class="upload-status"></div>
+<img id="preview">
+<p style="font-size:12px;color:#777;" id="photoHint">For Small Repair: Photo of fan / socket / box.<br>For House Wiring: Photo of house + rooms / interior.</p>
+
+<label>4. Pick Date</label>
+<input type="date" id="date" onchange="getMySlot()">
+
+<label>5. Your Slot</label>
+<div id="slots"><p style="color:#777;font-size:13px;">Select date to get your Slot Number</p></div>
+
+<label>Your Details</label>
+<input id="name" placeholder="Your Name *">
+<input id="address" placeholder="Address - e.g. Tuibong, Lamka *">
+<input id="phone" placeholder="Phone Number *">
+<textarea id="desc" placeholder="Describe... e.g. Fan making noise, 2 rooms for wiring"></textarea>
+
+<div class="price-box" id="priceBox">
+<div class="price-big" id="priceText">Estimated: ₹450</div>
+<div class="brand" id="brandText">With: Havells / Anchor Regulator + Service<br>Price includes high-quality Indian brand parts + labour. Final price after checking on spot.</div>
+</div>
+</div>
+
+<button id="bookBtn" onclick="sendBooking()">Book Me - Send on WhatsApp</button>
+
+<script>
+// ===== CHANGE THESE 3 LINES ONLY =====
+const SHOP_WHATSAPP = "918974854210"; // Your WhatsApp number with 91
+const APPS_SCRIPT_URL = "PASTE_YOUR_WEB_APP_URL_HERE"; // From Step 4
+const CLOUD_NAME = "YOUR_CLOUD_NAME"; // From Cloudinary, or leave as is
+const UPLOAD_PRESET = "electric_fix";
+// =====================================
+
+let currentType = "small";
+let mySlotNumber = 0;
+let uploadedPhotoUrl = "";
+
+function setType(t){
+  currentType = t;
+  document.getElementById("btnSmall").className = "type-btn" + (t==="small" ? " active" : "");
+  document.getElementById("btnWiring").className = "type-btn" + (t==="wiring" ? " active" : "");
+  document.getElementById("smallSection").style.display = t==="small" ? "block" : "none";
+  document.getElementById("wiringSection").style.display = t==="wiring" ? "block" : "none";
+  updatePrice();
+}
+
+function updatePrice(){
+  if(currentType === "wiring"){
+    document.getElementById("priceText").textContent = "Price: On Negotiation";
+    document.getElementById("brandText").innerHTML = "We use Polycab / Finolex Wires + Havells / Anchor Switches + Schneider MCB<br>Upload house photo. We will visit and give final quotation on WhatsApp.";
+  } else {
+    const val = document.getElementById("problem").value;
+    const [name, price, brand] = val.split("|");
+    document.getElementById("priceText").textContent = "Estimated: ₹" + price;
+    document.getElementById("brandText").innerHTML = "With: " + brand + "<br>Price includes high-quality Indian brand parts + labour. Final price after checking on spot.";
+  }
+}
+
+async function getMySlot(){
+  const date = document.getElementById("date").value;
+  if(!date) return;
+  document.getElementById("slots").innerHTML = "Checking queue...";
+  try {
+    const res = await fetch(`${APPS_SCRIPT_URL}?date=${date}`);
+    const data = await res.json();
+    mySlotNumber = data.nextSlot;
+    document.getElementById("slots").innerHTML = `<div style="background:#fef3c7;padding:15px;border-radius:10px;text-align:center;"><div style="font-size:14px;">For ${date}</div><div style="font-size:28px;font-weight:bold;color:#c2410c;">You are Slot ${mySlotNumber}</div><div style="font-size:13px;">${data.count} people ahead of you</div><div style="font-size:12px;color:#777;">We will message you when your turn comes</div></div>`;
+  } catch(e){
+    mySlotNumber = 1;
+    document.getElementById("slots").innerHTML = "Slot will be confirmed on WhatsApp";
+  }
+}
+
+document.getElementById("photo").onchange = async (e) => {
+  const file = e.target.files[0];
+  if(!file) return;
+  document.getElementById("preview").src = URL.createObjectURL(file);
+  document.getElementById("preview").style.display = "block";
+  if(CLOUD_NAME === "YOUR_CLOUD_NAME") { document.getElementById("uploadStatus").textContent = "Photo ready. You can attach it in WhatsApp."; return; }
+  document.getElementById("uploadStatus").textContent = "Uploading photo...";
+  const form = new FormData();
+  form.append("file", file);
+  form.append("upload_preset", UPLOAD_PRESET);
+  try {
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: "POST", body: form });
+    const data = await res.json();
+    uploadedPhotoUrl = data.secure_url;
+    document.getElementById("uploadStatus").textContent = "✅ Photo uploaded!";
+  } catch(err){ document.getElementById("uploadStatus").textContent = "Upload failed, attach photo manually in WhatsApp."; }
+};
+
+async function sendBooking(){
+  const date = document.getElementById("date").value;
+  const name = document.getElementById("name").value.trim();
+  const address = document.getElementById("address").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const desc = document.getElementById("desc").value.trim();
+  if(!date || !name || !address || !phone){ alert("Please fill Date, Name, Address, Phone"); return; }
+  if(!mySlotNumber) await getMySlot();
+
+  let problemText = "";
+  let priceText = "";
+  if(currentType === "small"){
+    const [p, price, brand] = document.getElementById("problem").value.split("|");
+    problemText = p + " (Small Repair)";
+    priceText = "₹" + price + " - With " + brand;
+  } else {
+    problemText = document.getElementById("wiringType").value + " (House Wiring)";
+    priceText = "On Negotiation - Need Visit";
+  }
+
+  try {
+    await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify({ date, slot: mySlotNumber, name, phone, address, problem: problemText, photo: uploadedPhotoUrl || "No photo" }) });
+  } catch(e){}
+
+  let msg = `⚡ NEW BOOKING - SLOT ${mySlotNumber}\n\nType: ${currentType === "small" ? "Small Repair" : "House Wiring"}\nProblem: ${problemText}\nEstimated: ${priceText}\nDate: ${date}\nSlot: ${mySlotNumber}\nDescription: ${desc || "Not provided"}\n\nName: ${name}\nAddress: ${address}\nPhone: ${phone}\n`;
+  if(uploadedPhotoUrl) msg += `\nPhoto: ${uploadedPhotoUrl}`;
+  else msg += `\nPhoto: I will attach photo here`;
+  msg += `\n\nPlease confirm my slot.`;
+  window.open(`https://wa.me/${SHOP_WHATSAPP}?text=${encodeURIComponent(msg)}`, "_blank");
+}
+
+const today = new Date();
+const localToday = new Date(today.getTime() - today.getTimezoneOffset()*60000).toISOString().slice(0,10);
+document.getElementById("date").min = localToday;
+document.getElementById("date").value = localToday;
+updatePrice();
+</script>
+</body>
+</html>
