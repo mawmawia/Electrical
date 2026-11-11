@@ -1,6 +1,6 @@
 {
-  "name": "Lamka Electrical - Book Electrician",
-  "short_name": "Lamka Electrical",
+  "name": "EG Electrical - Book Electrician",
+  "short_name": "EG Electrical",
   "description": "Take Photo, Get Price, Get Slot Number, Book Electrician in Lamka",
   "start_url": "./index.html",
   "display": "standalone",
@@ -19,18 +19,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
-    },
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
     }
   ]
 }
