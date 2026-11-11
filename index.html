@@ -79,7 +79,7 @@ select, input, textarea { width: 100%; padding: 13px; margin: 7px 0; border-radi
 </div>
 <button id="bookBtn" onclick="sendBooking()">Book Me - Send on WhatsApp</button>
 <script>
-const SHOP_WHATSAPP = "918974854210"; // <-- CHANGE THIS TO YOUR NUMBER WITH 91
+const SHOP_WHATSAPP = "917085254513";
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwVsh0OtpWfYIxslgSqerHmyS_ikvC0-bPqNIQxUUYIS1--bEIAq9ZmrMO_j4Aa3n6_sg/exec";
 const CLOUD_NAME = "YOUR_CLOUD_NAME";
 const UPLOAD_PRESET = "electric_fix";
@@ -91,7 +91,7 @@ function setType(t){
   document.getElementById("btnSmall").className = "type-btn" + (t==="small" ? " active" : "");
   document.getElementById("btnWiring").className = "type-btn" + (t==="wiring" ? " active" : "");
   document.getElementById("smallSection").style.display = t==="small" ? "block" : "none";
-  document.getElementById("wiringSection").style.display = t==="wiring" ? "block" : "none";
+  document.getElementById("wiringSection").style.display = t==="wiring" ? " block" : "none";
   updatePrice();
 }
 function updatePrice(){
