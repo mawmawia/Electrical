@@ -1,20 +1,12 @@
 {
-  "name": "Electrical - Book Electrician",
-  "short_name": "Electrical",
+  "name": "Lamka Electrical - Book Electrician",
+  "short_name": "Lamka Electrical",
   "start_url": "/electrical/",
   "display": "standalone",
   "background_color": "#fff7ed",
   "theme_color": "#c2410c",
   "icons": [
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
   ]
 }
