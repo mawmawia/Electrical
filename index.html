@@ -3,28 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lamka Electrical - Book Electrician</title>
+<title>EG Electrical - Book Electrician</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#000000">
 <style>
 * { box-sizing: border-box; }
 body { font-family: Arial, sans-serif; margin: 0; padding: 15px 15px 120px; background: #000000; color: #e8a87c; }
-h1 { text-align: center; color: #e8a87c; margin: 5px 0; font-size: 30px; letter-spacing: 1px; text-shadow: 0 0 10px #b87333; }
-.sub { text-align: center; color: #c98a4b; font-size: 14px; margin-bottom: 15px; }
+.page { display: none; }
+.page.active { display: block; }
+h1 { text-align: center; color: #e8a87c; margin: 10px 0 5px; font-size: 32px; text-shadow: 0 0 12px #b87333; }
+.sub { text-align: center; color: #c98a4b; font-size: 14px; margin-bottom: 20px; }
+.welcome-box { text-align: center; padding: 30px 15px; border: 2px solid #b87333; border-radius: 16px; background: #0a0a0a; box-shadow: 0 0 20px rgba(184,115,51,0.3); margin-top: 30px; }
+.welcome-big { font-size: 28px; font-weight: bold; line-height: 1.3; color: #e8a87c; }
+.welcome-sub { color: #c98a4b; margin: 15px 0 25px; line-height: 1.6; font-size: 14px; }
+.big-choice { width: 100%; padding: 22px 10px; margin: 10px 0; border-radius: 14px; border: 2px solid #b87333; background: #111111; color: #e8a87c; font-size: 19px; font-weight: bold; cursor: pointer; }
+.big-choice:active { background: #b87333; color: #000; }
 .card { background: #0a0a0a; padding: 16px; border-radius: 14px; border: 2px solid #b87333; box-shadow: 0 0 15px rgba(184,115,51,0.3); }
-label { font-weight: bold; font-size: 14px; display: block; margin-top: 18px; color: #e8a87c; text-transform: uppercase; letter-spacing: 0.5px; }
+label { font-weight: bold; font-size: 14px; display: block; margin-top: 18px; color: #e8a87c; text-transform: uppercase; }
 select, input, textarea { width: 100%; padding: 13px; margin: 7px 0; border-radius: 9px; border: 2px solid #b87333; font-size: 16px; background: #111111; color: #e8a87c; outline: none; }
-select:focus, input:focus, textarea:focus { border-color: #e8a87c; box-shadow: 0 0 8px #b87333; }
 select option { background: #111111; color: #e8a87c; }
-.type-btn { width: 48%; padding: 14px; border: 2px solid #b87333; background: #111111; color: #e8a87c; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; }
-.type-btn.active { background: #b87333; color: #000000; border-color: #e8a87c; box-shadow: 0 0 12px #b87333; }
 .photo-btn { width: 48%; padding: 15px 5px; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; border: 2px solid #b87333; background: #111111; color: #e8a87c; }
-.photo-btn:active { background: #b87333; color: #000000; }
 #preview { width: 100%; border-radius: 10px; margin-top: 10px; display: none; border: 2px solid #b87333; }
-.price-box { background: #111111; padding: 16px; border-radius: 12px; text-align: center; margin-top: 16px; border: 2px solid #b87333; box-shadow: 0 0 12px rgba(184,115,51,0.4); }
+.price-box { background: #111111; padding: 16px; border-radius: 12px; text-align: center; margin-top: 16px; border: 2px solid #b87333; }
 .price-big { font-size: 24px; font-weight: bold; color: #e8a87c; }
 .brand { font-size: 13px; color: #c98a4b; margin-top: 6px; line-height: 1.5; }
-#bookBtn { position: fixed; bottom: 0; left: 0; right: 0; background: #b87333; color: #000000; padding: 18px; text-align: center; font-size: 18px; font-weight: bold; border: none; border-top: 2px solid #e8a87c; width: 100%; letter-spacing: 0.5px; }
+#bookBtn { position: fixed; bottom: 0; left: 0; right: 0; background: #b87333; color: #000000; padding: 18px; text-align: center; font-size: 18px; font-weight: bold; border: none; border-top: 2px solid #e8a87c; width: 100%; }
 #bookBtn:disabled { background: #3a2a1a; color: #e8a87c; }
 .upload-status { font-size: 13px; color: #e8a87c; margin-top: 8px; font-weight: bold; }
 .hint { font-size: 12px; color: #c98a4b; line-height: 1.6; }
@@ -32,22 +35,29 @@ select option { background: #111111; color: #e8a87c; }
 .slot-box { background: #111111; padding: 15px; border-radius: 10px; text-align: center; border: 2px solid #b87333; }
 .slot-num { font-size: 30px; font-weight: bold; color: #e8a87c; }
 hr { border: none; border-top: 2px solid #b87333; margin: 18px 0; opacity: 0.7; }
+.back-btn { background: none; border: none; color: #e8a87c; font-size: 14px; margin-bottom: 10px; cursor: pointer; }
+.success-box { text-align: center; padding: 30px 15px; border: 2px solid #b87333; border-radius: 16px; background: #0a0a0a; }
 </style>
 </head>
 <body>
-<h1>⚡ LAMKA ELECTRICAL</h1>
-<p class="sub">TAKE PHOTO • GET PRICE • GET SLOT NUMBER • BOOK</p>
-<div class="card">
-<label>1. What Do You Need?</label>
-<div style="display:flex; justify-content:space-between;">
-<button type="button" class="type-btn active" id="btnSmall" onclick="setType('small')">🔧 SMALL REPAIR<br><span style="font-size:12px;font-weight:normal;">Fan / Socket / Box</span></button>
-<button type="button" class="type-btn" id="btnWiring" onclick="setType('wiring')">🏠 HOUSE WIRING<br><span style="font-size:12px;font-weight:normal;">Full House / New House</span></button>
+<div id="pageWelcome" class="page active">
+  <div class="welcome-box">
+    <div style="font-size:55px;">⚡</div>
+    <div class="welcome-big">WELCOME TO<br>EG ELECTRICAL !!!</div>
+    <div class="welcome-sub">TAKE PHOTO • GET PRICE • GET SLOT NUMBER • BOOK<br><br>Lamka • Churachandpur<br>Fast Service • Genuine Indian Brands</div>
+    <button class="big-choice" onclick="goTo('small')">🔧 REPAIR<br><span style="font-size:13px;font-weight:normal;">Fan / Socket / Switch / Box</span></button>
+    <button class="big-choice" onclick="goTo('wiring')">🏠 HOUSE WIRING<br><span style="font-size:13px;font-weight:normal;">New House / Full Wiring / Re-Wiring</span></button>
+    <p style="font-size:12px;color:#c98a4b;margin-top:15px;">Tap one to start booking</p>
+  </div>
 </div>
-<hr>
+<div id="pageForm" class="page">
+<button class="back-btn" onclick="goHome()">← BACK TO HOME</button>
+<h1 id="formTitle">⚡ REPAIR</h1>
+<div class="card">
 <div id="smallSection">
-<label>2. Select Small Repair</label>
+<label>Select Repair</label>
 <select id="problem" onchange="updatePrice()">
-<option value="None / Other - Upload Photo Only|0|Upload photo of your problem. We will check and negotiate on WhatsApp. You still get your Slot Number.">❓ None / Other - Upload Photo, We Will Negotiate</option>
+<option value="None (Upload Pic)|0|None">❓ None (Upload Pic)</option>
 <option value="Ceiling Fan Repair / Regulator Change|450|Havells / Anchor Regulator + Service">🌀 Ceiling Fan Repair / Regulator - ₹450</option>
 <option value="Fan Installation (New Fan)|550|Havells / Orient Fan Fitting + Anchor Regulator">🌀 New Fan Installation - ₹550</option>
 <option value="Switch / Socket Repair|280|Anchor Roma / Havells Switch">🔌 Switch / Socket Repair - ₹280</option>
@@ -61,17 +71,17 @@ hr { border: none; border-top: 2px solid #b87333; margin: 18px 0; opacity: 0.7; 
 </select>
 </div>
 <div id="wiringSection" style="display:none;">
-<label>2. House Wiring Details</label>
+<label>House Wiring Details</label>
 <select id="wiringType">
 <option value="New House Full Wiring">New House Full Wiring</option>
 <option value="Old House Re-Wiring">Old House Re-Wiring</option>
 <option value="Single Room Wiring">Single Room Wiring</option>
 <option value="Shop / Office Wiring">Shop / Office Wiring</option>
 </select>
-<p class="negotiate-box">For House Wiring, price depends on house size, rooms, wire length. Upload photo of house + interior. We will visit and negotiate on WhatsApp. No fixed price.</p>
+<p class="negotiate-box">For House Wiring, price depends on house size. Upload photo of house. We will visit and negotiate on WhatsApp.</p>
 </div>
 <hr>
-<label>3. Photo Of Problem</label>
+<label>Photo Of Problem</label>
 <div style="display:flex; justify-content:space-between;">
 <button type="button" class="photo-btn" onclick="document.getElementById('photoCamera').click()">📷 TAKE PHOTO</button>
 <button type="button" class="photo-btn" onclick="document.getElementById('photoGallery').click()">🖼️ FROM GALLERY</button>
@@ -80,40 +90,68 @@ hr { border: none; border-top: 2px solid #b87333; margin: 18px 0; opacity: 0.7; 
 <input type="file" id="photoGallery" accept="image/*" style="display:none;">
 <div id="uploadStatus" class="upload-status"></div>
 <img id="preview">
-<p class="hint">Tap TAKE PHOTO to open camera instantly. Photo uploads automatically to Cloudinary - you don't need to send it again on WhatsApp.</p>
+<p class="hint">Tap TAKE PHOTO to open camera instantly.</p>
 <hr>
-<label>4. Pick Date</label>
+<label>Pick Date</label>
 <input type="date" id="date" onchange="getMySlot()">
-<label>5. Your Slot</label>
+<label>Your Slot</label>
 <div id="slots"><p style="color:#c98a4b;font-size:13px;">Select date to get your Slot Number</p></div>
 <hr>
 <label>Your Details</label>
 <input id="name" placeholder="YOUR NAME *">
 <input id="address" placeholder="ADDRESS - e.g. Tuibong, Lamka *">
 <input id="phone" placeholder="PHONE NUMBER *">
-<textarea id="desc" placeholder="Describe... e.g. Fan making noise, 2 rooms for wiring"></textarea>
+<textarea id="desc" placeholder="Describe... e.g. Fan making noise"></textarea>
 <div class="price-box">
 <div class="price-big" id="priceText">PRICE: ON NEGOTIATION</div>
-<div class="brand" id="brandText">Upload photo of your problem. We will check and negotiate on WhatsApp.<br>You still get your Slot Number.</div>
+<div class="brand" id="brandText">Upload photo. We will check and negotiate on WhatsApp.<br>You still get your Slot Number.</div>
 </div>
 </div>
-<button id="bookBtn" onclick="sendBooking()">BOOK ME - SEND ON WHATSAPP</button>
+</div>
+<div id="pageDone" class="page">
+  <div class="success-box">
+    <div style="font-size:60px;">✅</div>
+    <div style="font-size:24px;font-weight:bold;margin:10px 0;">BOOKING SENT!</div>
+    <p style="color:#c98a4b;line-height:1.6;">WhatsApp opened with your details.<br>Press SEND in WhatsApp to confirm.<br><br>Your Slot is saved.</p>
+    <button class="big-choice" onclick="goHome()">🏠 BACK TO HOME</button>
+  </div>
+</div>
+<button id="bookBtn" onclick="sendBooking()" style="display:none;">BOOK ME - SEND ON WHATSAPP</button>
 <script>
 const SHOP_WHATSAPP = "917085254513";
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwVsh0OtpWfYIxslgSqerHmyS_ikvC0-bPqNIQxUUYIS1--bEIAq9ZmrMO_j4Aa3n6_sg/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby2R1vOkdu5jV_Ikm8RLiaqI4ZaKREE9e-HAFOyaSATUDe1X_6T1ANxYuJ1OrCrIVI0/exec";
 const CLOUD_NAME = "pbsnnbvz";
 const UPLOAD_PRESET = "electric_fix";
 let currentType = "small";
 let mySlotNumber = 0;
 let uploadedPhotoUrl = "";
 let isUploading = false;
-function setType(t){
-  currentType = t;
-  document.getElementById("btnSmall").className = "type-btn" + (t==="small" ? " active" : "");
-  document.getElementById("btnWiring").className = "type-btn" + (t==="wiring" ? " active" : "");
-  document.getElementById("smallSection").style.display = t==="small" ? "block" : "none";
-  document.getElementById("wiringSection").style.display = t==="wiring" ? "block" : "none";
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function goTo(type){
+  currentType = type;
+  document.getElementById("formTitle").textContent = type === "small" ? "⚡ REPAIR" : "⚡ HOUSE WIRING";
+  document.getElementById("smallSection").style.display = type === "small" ? "block" : "none";
+  document.getElementById("wiringSection").style.display = type === "wiring" ? "block" : "none";
+  showPage("pageForm");
+  document.getElementById("bookBtn").style.display = "block";
   updatePrice();
+}
+function goHome(){
+  document.getElementById("name").value = "";
+  document.getElementById("address").value = "";
+  document.getElementById("phone").value = "";
+  document.getElementById("desc").value = "";
+  document.getElementById("preview").style.display = "none";
+  document.getElementById("preview").src = "";
+  document.getElementById("uploadStatus").textContent = "";
+  document.getElementById("slots").innerHTML = '<p style="color:#c98a4b;font-size:13px;">Select date to get your Slot Number</p>';
+  uploadedPhotoUrl = ""; mySlotNumber = 0;
+  document.getElementById("bookBtn").style.display = "none";
+  showPage("pageWelcome");
 }
 function updatePrice(){
   if(currentType === "wiring"){
@@ -123,10 +161,10 @@ function updatePrice(){
     const parts = document.getElementById("problem").value.split("|");
     if(parts[1] === "0"){
       document.getElementById("priceText").textContent = "PRICE: ON NEGOTIATION";
-      document.getElementById("brandText").innerHTML = "Upload photo of your problem. We will check and negotiate on WhatsApp.<br>You still get your Slot Number.";
+      document.getElementById("brandText").innerHTML = "Upload photo. We will check and negotiate on WhatsApp.<br>You still get your Slot Number.";
     } else {
       document.getElementById("priceText").textContent = "ESTIMATED: ₹" + parts[1];
-      document.getElementById("brandText").innerHTML = "With: " + parts[2] + "<br>Price includes high-quality Indian brand parts + labour. Final price after checking on spot.";
+      document.getElementById("brandText").innerHTML = "With: " + parts[2] + "<br>Final price after checking on spot.";
     }
   }
 }
@@ -138,7 +176,7 @@ async function getMySlot(){
     const res = await fetch(APPS_SCRIPT_URL + "?date=" + date);
     const data = await res.json();
     mySlotNumber = data.nextSlot;
-    document.getElementById("slots").innerHTML = "<div class='slot-box'><div style='font-size:14px;color:#c98a4b;'>FOR " + date + "</div><div class='slot-num'>YOU ARE SLOT " + mySlotNumber + "</div><div style='font-size:13px;color:#e8a87c;'>" + data.count + " people ahead of you</div><div style='font-size:12px;color:#c98a4b;'>We will message you when your turn comes</div></div>";
+    document.getElementById("slots").innerHTML = "<div class='slot-box'><div style='font-size:14px;color:#c98a4b;'>FOR " + date + "</div><div class='slot-num'>YOU ARE SLOT " + mySlotNumber + "</div><div style='font-size:13px;color:#e8a87c;'>" + data.count + " people ahead of you</div></div>";
   } catch(e){
     mySlotNumber = 1;
     document.getElementById("slots").innerHTML = "Slot will be confirmed on WhatsApp";
@@ -158,15 +196,9 @@ async function handlePhoto(file){
   try {
     const res = await fetch("https://api.cloudinary.com/v1_1/" + CLOUD_NAME + "/image/upload", { method: "POST", body: form });
     const data = await res.json();
-    if(data.secure_url){
-      uploadedPhotoUrl = data.secure_url;
-      document.getElementById("uploadStatus").textContent = "✅ PHOTO UPLOADED! YOU CAN NOW BOOK.";
-    } else {
-      document.getElementById("uploadStatus").textContent = "❌ UPLOAD FAILED: " + (data.error ? data.error.message : "Check preset is Unsigned and name is electric_fix");
-    }
-  } catch(err){
-    document.getElementById("uploadStatus").textContent = "❌ UPLOAD FAILED - Check internet. Try again.";
-  }
+    if(data.secure_url){ uploadedPhotoUrl = data.secure_url; document.getElementById("uploadStatus").textContent = "✅ PHOTO UPLOADED! YOU CAN NOW BOOK."; }
+    else document.getElementById("uploadStatus").textContent = "❌ UPLOAD FAILED: " + (data.error ? data.error.message : "Check preset");
+  } catch(err){ document.getElementById("uploadStatus").textContent = "❌ UPLOAD FAILED - Check internet. Try again."; }
   isUploading = false;
   document.getElementById("bookBtn").disabled = false;
   document.getElementById("bookBtn").textContent = "BOOK ME - SEND ON WHATSAPP";
@@ -174,7 +206,7 @@ async function handlePhoto(file){
 document.getElementById("photoCamera").onchange = (e) => handlePhoto(e.target.files[0]);
 document.getElementById("photoGallery").onchange = (e) => handlePhoto(e.target.files[0]);
 async function sendBooking(){
-  if(isUploading){ alert("Photo is still uploading, please wait 2 seconds"); return; }
+  if(isUploading){ alert("Photo is still uploading, please wait"); return; }
   const date = document.getElementById("date").value;
   const name = document.getElementById("name").value.trim();
   const address = document.getElementById("address").value.trim();
@@ -182,24 +214,24 @@ async function sendBooking(){
   const desc = document.getElementById("desc").value.trim();
   if(!date || !name || !address || !phone){ alert("Please fill Date, Name, Address, Phone"); return; }
   if(!mySlotNumber) await getMySlot();
-  let problemText = "";
-  let priceText = "";
+  let problemText = ""; let priceText = "";
   if(currentType === "small"){
     const parts = document.getElementById("problem").value.split("|");
-    problemText = parts[0] + " (Small Repair)";
-    priceText = parts[1] === "0" ? "On Negotiation - Photo Only, Need Visit" : "₹" + parts[1] + " - With " + parts[2];
+    problemText = parts[0] + " (Repair)";
+    priceText = parts[1] === "0" ? "On Negotiation" : "₹" + parts[1] + " - With " + parts[2];
   } else {
     problemText = document.getElementById("wiringType").value + " (House Wiring)";
     priceText = "On Negotiation - Need Visit";
   }
-  try {
-    await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify({ date: date, slot: mySlotNumber, name: name, phone: phone, address: address, problem: problemText, photo: uploadedPhotoUrl || "No photo uploaded" }) });
-  } catch(e){}
-  let msg = "⚡ NEW BOOKING - SLOT " + mySlotNumber + "\n\nType: " + (currentType === "small" ? "Small Repair" : "House Wiring") + "\nProblem: " + problemText + "\nEstimated: " + priceText + "\nDate: " + date + "\nSlot: " + mySlotNumber + "\nDescription: " + (desc || "Not provided") + "\n\nName: " + name + "\nAddress: " + address + "\nPhone: " + phone + "\n";
+  try { await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify({ date: date, slot: mySlotNumber, name: name, phone: phone, address: address, problem: problemText, photo: uploadedPhotoUrl || "No photo" }) }); } catch(e){}
+  let msg = "⚡ NEW BOOKING - SLOT " + mySlotNumber + "\n\nType: " + (currentType === "small" ? "Repair" : "House Wiring") + "\nProblem: " + problemText + "\nEstimated: " + priceText + "\nDate: " + date + "\nSlot: " + mySlotNumber + "\nDescription: " + (desc || "Not provided") + "\n\nName: " + name + "\nAddress: " + address + "\nPhone: " + phone + "\n";
   if(uploadedPhotoUrl) msg += "\nPhoto Link: " + uploadedPhotoUrl + "\nTap link to see photo 👆";
   else msg += "\nPhoto: No photo uploaded";
   msg += "\n\nPlease confirm my slot.";
   window.open("https://wa.me/" + SHOP_WHATSAPP + "?text=" + encodeURIComponent(msg), "_blank");
+  document.getElementById("bookBtn").style.display = "none";
+  showPage("pageDone");
+  setTimeout(() => { goHome(); }, 5000);
 }
 const today = new Date();
 const localToday = new Date(today.getTime() - today.getTimezoneOffset()*60000).toISOString().slice(0,10);
