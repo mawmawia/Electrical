@@ -49,16 +49,19 @@ hr { border: none; border-top: 2px solid #b87333; margin: 18px 0; opacity: 0.7; 
 .est-table td { padding: 8px 4px; border-bottom: 1px solid #333; color: #e8a87c; }
 .est-table td:last-child { text-align: right; font-weight: bold; }
 .step-badge { display: inline-block; background: #b87333; color: #000; font-weight: bold; padding: 4px 12px; border-radius: 20px; font-size: 13px; margin-bottom: 8px; }
+.restore-banner { background: #1a3a1a; border: 2px solid #4CAF50; color: #aaffaa; padding: 12px; border-radius: 10px; text-align: center; font-size: 13px; margin-bottom: 12px; display: none; }
 </style>
 </head>
 <body>
+<div id="restoreBanner" class="restore-banner">✅ Welcome back! Your booking was restored - your photos & details are safe. Continue paying.</div>
 <div id="pageWelcome" class="page active">
   <div class="welcome-box">
     <div style="font-size:55px;">⚡</div>
     <div class="welcome-big">WELCOME TO<br>EG ELECTRICAL !!!</div>
-    <div class="welcome-sub">TAKE UP TO 5 PHOTOS • GET PRODUCT PRICE • GET SLOT NUMBER • BOOK<br><br>Lamka • Churachandpur<br>Fast Service • Genuine Indian Brands<br><br><b style="color:#e8a87c;">Booking Fee: ₹50 Only</b><br><span style="font-size:12px;">Booking Fee is separate. Not adjusted in final bill.</span></div>
+    <div class="welcome-sub">TAKE UP TO 5 PHOTOS • GET PRODUCT PRICE • GET SLOT NUMBER • BOOK<br><br>Lamka • Churachandpur<br>Fast Service • Genuine Indian Brands<br><br><b style="color:#e8a87c;">✅ Work by Certified Electrician</b><br>Eric Thuamhmingliana<br><span style="font-size:12px;">EG Electrical - Business Account</span><br><br><b style="color:#e8a87c;">Booking Fee: ₹50 Only</b><br><span style="font-size:12px;">Booking Fee is separate. Not adjusted in final bill.</span><br><span style="font-size:11px;color:#888;">Your photos & details are only used for booking and will not be shared.<br>Your booking is saved for 1 hour even if you switch to GPay.</span></div>
     <button class="big-choice" onclick="goTo('small')">🔧 REPAIR<br><span style="font-size:13px;font-weight:normal;">Just Photo + Comment - Up To 5 Pics</span></button>
-    <button class="big-choice" onclick="goTo('wiring')">🏠 HOUSE WIRING<br><span style="font-size:13px;font-weight:normal;">New House / Full Wiring / Re-Wiring</span></button>
+    <button class="big-choice" onclick="goTo('wiring')">🏠 HOUSE WIRING<br><span style="font-size:13px;font-weight:normal;">By Certified Electrician</span></button>
+    <button id="resumeBtn" class="big-choice" onclick="resumeBooking()" style="display:none;background:#1a3a1a;">↩️ RESUME MY LAST BOOKING<br><span style="font-size:13px;font-weight:normal;">Your photos & slot are saved</span></button>
     <p style="font-size:12px;color:#c98a4b;margin-top:15px;">Tap one to start booking</p>
   </div>
 </div>
@@ -68,7 +71,7 @@ hr { border: none; border-top: 2px solid #b87333; margin: 18px 0; opacity: 0.7; 
 <h1 id="formTitle">⚡ REPAIR</h1>
 <div class="card">
 <div id="smallSection">
-<p class="negotiate-box">No need to select repair type. Just <b>take up to 5 photos</b> of problem and write what happened in comment.</p>
+<p class="negotiate-box">No need to select repair type. Just <b>take up to 5 photos</b> and write what happened.</p>
 </div>
 <div id="wiringSection" style="display:none;">
 <label>House Wiring Details</label>
@@ -78,7 +81,7 @@ hr { border: none; border-top: 2px solid #b87333; margin: 18px 0; opacity: 0.7; 
 <option value="Single Room Wiring">Single Room Wiring</option>
 <option value="Shop / Office Wiring">Shop / Office Wiring</option>
 </select>
-<p class="negotiate-box">For House Wiring, upload up to 5 photos of house. We will visit and give quotation on WhatsApp.</p>
+<p class="negotiate-box">Work by Certified Electrician. Upload up to 5 photos of house.</p>
 </div>
 <hr>
 <label>1. Photos Of Problem * <span id="photoCount" style="color:#e8a87c;">(0/5)</span></label>
@@ -90,8 +93,7 @@ hr { border: none; border-top: 2px solid #b87333; margin: 18px 0; opacity: 0.7; 
 <input type="file" id="photoGallery" accept="image/*" multiple style="display:none;">
 <div id="uploadStatus" class="upload-status"></div>
 <div id="previewGrid" class="preview-grid"></div>
-<p class="hint">Max 5 photos per booking. Tap ❌ to remove a photo.</p>
-
+<p class="hint">Max 5 photos per booking. Tap ❌ to remove a photo. Your photos are saved even if you switch to GPay.</p>
 <div id="estimateBox" style="display:none;">
   <div id="loadingBox">
     <div class="loader"></div>
@@ -108,7 +110,6 @@ hr { border: none; border-top: 2px solid #b87333; margin: 18px 0; opacity: 0.7; 
     </div>
   </div>
 </div>
-
 <hr>
 <label>2. Your Comment / What Happened *</label>
 <textarea id="desc" placeholder="E.g. Fan making noise, socket sparking..." rows="3"></textarea>
@@ -124,43 +125,34 @@ hr { border: none; border-top: 2px solid #b87333; margin: 18px 0; opacity: 0.7; 
 <input id="phone" placeholder="PHONE NUMBER *">
 <div class="price-box">
 <div style="font-size:15px;font-weight:bold;">BOOKING FEE: ₹50</div>
-<div style="font-size:12px;color:#c98a4b;margin-top:6px;">Pay ₹50 now to confirm your Slot. Booking Fee ₹50 only. Separate from repair / product charge.<br>Pay to: Eric Thuamhmimgliana</div>
+<div style="font-size:12px;color:#c98a4b;margin-top:6px;">Pay ₹50 now to confirm your Slot. Booking Fee ₹50 only. Separate from repair / product charge.<br>Pay to: Eric Thuamhmingliana</div>
 </div>
 </div>
 </div>
 
-<!-- PAY PAGE - NEW: QR + COPY UPI + UTR + SCREENSHOT -->
 <div id="pagePay" class="page">
   <div class="success-box">
     <div style="font-size:50px;">💰</div>
     <div style="font-size:24px;font-weight:bold;margin:10px 0;">PAY ₹50 TO CONFIRM<br>SLOT <span id="paySlotNum"></span></div>
-
+    <p style="font-size:12px;color:#4CAF50;">🔒 Your booking is saved. You can switch to GPay / Paytm and come back - nothing will be lost for 1 hour.</p>
     <div class="step-badge">STEP 1 - SCAN QR & PAY</div>
-    <p style="color:#c98a4b;line-height:1.6;">Open GPay / PhonePe / Paytm → Scan this QR → Pay ₹50</p>
+    <p style="color:#c98a4b;line-height:1.6;">Open GPay / PhonePe / Paytm → Scan this QR → Pay ₹50<br><span style="font-size:12px;">Tip: Take a screenshot of this QR first, then open GPay and pay from screenshot.</span></p>
     <img src="qr.png" class="qr-img" onerror="this.style.display='none'">
-
     <div class="step-badge">STEP 2 - COPY UPI ID</div>
-    <p style="color:#c98a4b;">Pay to: <b style="color:#e8a87c;">Eric Thuamhmimgliana</b></p>
-    <div style="background:#111;padding:12px;border-radius:10px;border:2px dashed #b87333;word-break:break-all;font-weight:bold;" id="upiDisplay">ericthuamhmimgliana@okhdfcbank</div>
+    <p style="color:#c98a4b;">Pay to: <b style="color:#e8a87c;">Eric Thuamhmingliana</b></p>
+    <div style="background:#111;padding:12px;border-radius:10px;border:2px dashed #b87333;word-break:break-all;font-weight:bold;" id="upiDisplay">ericthuamhmingliana@okhdfcbank</div>
     <button class="pay-btn" onclick="copyUPI()">📋 COPY UPI ID</button>
     <p id="copyMsg" style="font-size:12px;color:#4CAF50;"></p>
-
     <hr>
     <div class="step-badge">STEP 3 - PROOF OF PAYMENT (REQUIRED)</div>
-    <p style="color:#c98a4b;font-size:13px;line-height:1.6;">After paying, GPay shows a <b style="color:#e8a87c;">UTR / Transaction ID (12 digits)</b> like 418765432109.<br>Enter it below + upload payment screenshot.<br><b>Without UTR + Screenshot, booking will NOT go through.</b></p>
-
+    <p style="color:#c98a4b;font-size:13px;line-height:1.6;">After paying, GPay shows <b style="color:#e8a87c;">UTR / Transaction ID (12 digits)</b>.<br>Enter it + upload screenshot. Without UTR + Screenshot, booking will NOT go through.</p>
     <label style="text-align:left;">UTR / Transaction ID *</label>
     <input id="utrInput" placeholder="Enter 12-digit UTR from GPay *" inputmode="numeric" maxlength="12" oninput="checkPayProof()">
-    <p style="font-size:12px;color:#c98a4b;text-align:left;">Find it in GPay → Transaction → UTR / UPI Transaction ID</p>
-
     <label style="text-align:left;">Payment Screenshot *</label>
-    <div style="display:flex;justify-content:space-between;">
-      <button type="button" class="photo-btn" onclick="document.getElementById('payScreenshot').click()" style="width:100%;">📸 UPLOAD PAYMENT SCREENSHOT</button>
-    </div>
+    <button type="button" class="photo-btn" onclick="document.getElementById('payScreenshot').click()" style="width:100%;">📸 UPLOAD PAYMENT SCREENSHOT</button>
     <input type="file" id="payScreenshot" accept="image/*" style="display:none;">
     <div id="payShotStatus" class="upload-status"></div>
     <img id="payShotPreview" style="width:100%;border-radius:10px;margin-top:10px;display:none;border:2px solid #b87333;">
-
     <hr>
     <button id="confirmPayBtn" class="big-choice" onclick="confirmPaid()" disabled>🔒 ENTER UTR + SCREENSHOT TO UNLOCK BOOKING</button>
     <button class="back-btn" onclick="goHome()" style="margin-top:15px;">← Cancel</button>
@@ -171,8 +163,8 @@ hr { border: none; border-top: 2px solid #b87333; margin: 18px 0; opacity: 0.7; 
   <div class="success-box">
     <div style="font-size:60px;">✅</div>
     <div style="font-size:24px;font-weight:bold;margin:10px 0;">BOOKING SENT!</div>
-    <p style="color:#c98a4b;line-height:1.6;">WhatsApp opened with Slot + Photos + UTR + Payment Screenshot.<br>Press SEND in WhatsApp to confirm.<br><br>We will check your UTR in GPay and confirm your slot.</p>
-    <button class="big-choice" onclick="goHome()">🏠 BACK TO HOME</button>
+    <p style="color:#c98a4b;line-height:1.6;">WhatsApp opened with Slot + Photos + UTR + Payment Screenshot.<br>Press SEND in WhatsApp to confirm.<br><br>Tap BACK TO HOME to clear this booking and start a new one.</p>
+    <button class="big-choice" onclick="clearAndGoHome()">🏠 BACK TO HOME - CLEAR BOOKING</button>
   </div>
 </div>
 <button id="bookBtn" onclick="goToPay()" style="display:none;">BOOK ME - PAY ₹50 & SEND ON WHATSAPP →</button>
@@ -181,9 +173,11 @@ const SHOP_WHATSAPP = "917085254513";
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby2R1vOkdu5jV_Ikm8RLiaqI4ZaKREE9e-HAFOyaSATUDe1X_6T1ANxYuJ1OrCrIVI0/exec";
 const CLOUD_NAME = "pbsnnbvz";
 const UPLOAD_PRESET = "electric_fix";
-const UPI_ID = "ericthuamhmimgliana@okhdfcbank";
-const PAYEE_NAME = "Eric Thuamhmimgliana";
+const UPI_ID = "ericthuamhmingliana@okhdfcbank";
+const PAYEE_NAME = "Eric Thuamhmingliana";
 const MAX_PHOTOS = 5;
+const SAVE_KEY = "eg_booking_v8";
+const ONE_HOUR = 60 * 60 * 1000;
 let currentType = "small";
 let mySlotNumber = 0;
 let uploadedPhotoUrls = [];
@@ -191,171 +185,86 @@ let payScreenshotUrl = "";
 let isUploading = false;
 let isPayShotUploading = false;
 let currentEstimate = "";
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0,0);
+let currentPage = "pageWelcome";
+// ---- SAVE / RESTORE - FIX FOR REFRESH WHILE PAYING ----
+function saveState(){
+  try{
+    const data = { savedAt: Date.now(), page: currentPage, type: currentType, name: document.getElementById("name").value, address: document.getElementById("address").value, phone: document.getElementById("phone").value, desc: document.getElementById("desc").value, date: document.getElementById("date").value, slot: mySlotNumber, photos: uploadedPhotoUrls, payShot: payScreenshotUrl, utr: document.getElementById("utrInput") ? document.getElementById("utrInput").value : "", estimate: currentEstimate, wiringType: document.getElementById("wiringType") ? document.getElementById("wiringType").value : "" };
+    localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+  }catch(e){}
 }
-function goTo(type){
-  currentType = type;
-  document.getElementById("formTitle").textContent = type === "small" ? "⚡ REPAIR" : "⚡ HOUSE WIRING";
-  document.getElementById("smallSection").style.display = type === "small" ? "block" : "none";
-  document.getElementById("wiringSection").style.display = type === "wiring" ? "block" : "none";
-  showPage("pageForm");
-  document.getElementById("bookBtn").style.display = "block";
+function loadState(){
+  try{
+    const raw = localStorage.getItem(SAVE_KEY); if(!raw) return null;
+    const data = JSON.parse(raw);
+    if(Date.now() - data.savedAt > ONE_HOUR){ localStorage.removeItem(SAVE_KEY); return null; }
+    return data;
+  }catch(e){ return null; }
 }
-function goHome(){
-  document.getElementById("name").value = ""; document.getElementById("address").value = "";
-  document.getElementById("phone").value = ""; document.getElementById("desc").value = "";
-  document.getElementById("previewGrid").innerHTML = ""; document.getElementById("photoCount").textContent = "(0/5)";
-  document.getElementById("uploadStatus").textContent = ""; document.getElementById("estimateBox").style.display = "none";
-  document.getElementById("slots").innerHTML = '<p style="color:#c98a4b;font-size:13px;">Select date to get your Slot Number</p>';
-  document.getElementById("utrInput").value = ""; document.getElementById("payShotPreview").style.display = "none";
-  document.getElementById("payShotStatus").textContent = ""; payScreenshotUrl = "";
-  uploadedPhotoUrls = []; mySlotNumber = 0; currentEstimate = "";
-  document.getElementById("bookBtn").style.display = "none";
-  showPage("pageWelcome");
-}
-function updatePhotoCount(){ document.getElementById("photoCount").textContent = "(" + uploadedPhotoUrls.length + "/5)"; }
-function removePhoto(index){ uploadedPhotoUrls.splice(index, 1); renderPreviews(); }
-function renderPreviews(){
-  const grid = document.getElementById("previewGrid"); grid.innerHTML = "";
-  uploadedPhotoUrls.forEach((url, i) => {
-    const div = document.createElement("div"); div.className = "preview-wrap";
-    div.innerHTML = '<span class="preview-num">' + (i+1) + '/5</span><button class="del-btn" onclick="removePhoto(' + i + ')">×</button><img src="' + url + '">';
-    grid.appendChild(div);
-  });
-  updatePhotoCount();
-}
-function copyUPI(){
-  const text = UPI_ID;
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(()=>{ document.getElementById("copyMsg").textContent = "✅ Copied! Now paste in GPay / PhonePe"; });
-  } else {
-    const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta);
-    document.getElementById("copyMsg").textContent = "✅ Copied! Now paste in GPay / PhonePe";
-  }
-}
-function checkPayProof(){
-  const utr = document.getElementById("utrInput").value.trim();
-  const btn = document.getElementById("confirmPayBtn");
-  if(utr.length >= 12 && payScreenshotUrl){
-    btn.disabled = false;
-    btn.textContent = "✅ PAYMENT PROOF READY - SEND ON WHATSAPP";
-  } else {
-    btn.disabled = true;
-    btn.textContent = "🔒 ENTER UTR (" + utr.length + "/12) + SCREENSHOT TO UNLOCK BOOKING";
-  }
-}
-function showEstimate(){
-  document.getElementById("estimateBox").style.display = "block";
-  document.getElementById("loadingBox").style.display = "block";
-  document.getElementById("estimateResult").style.display = "none";
-  setTimeout(() => {
-    document.getElementById("loadingBox").style.display = "none";
-    document.getElementById("estimateResult").style.display = "block";
-    if(currentType === "wiring"){
-      document.getElementById("priceText").textContent = "ON VISIT - QUOTATION";
-      document.getElementById("brandText").innerHTML = "We use Polycab / Finolex Wires + Havells / Anchor Switches + Schneider MCB";
-      document.getElementById("estTable").innerHTML = "<tr><td>Polycab Wire (90m)</td><td>₹1,450 - ₹2,100</td></tr><tr><td>Anchor Roma Switch</td><td>₹85</td></tr><tr><td>Havells MCB 32A</td><td>₹420</td></tr>";
-      currentEstimate = "House Wiring - Product price on visit. Polycab Wire ₹1450-2100, Anchor Switch ₹85, Havells MCB ₹420";
-    } else {
-      document.getElementById("priceText").textContent = "₹85 - ₹1,450";
-      document.getElementById("brandText").innerHTML = "Common Indian products you may need:";
-      document.getElementById("estTable").innerHTML = "<tr><td>Anchor Roma Switch / Socket</td><td>₹85 - ₹250</td></tr><tr><td>Anchor Roma 6-Module Board</td><td>₹380</td></tr><tr><td>Havells / Anchor Regulator</td><td>₹280</td></tr><tr><td>Havells Ceiling Fan (1200mm)</td><td>₹1,450</td></tr><tr><td>Orient Ceiling Fan</td><td>₹1,350</td></tr><tr><td>Havells LED Bulb 9W</td><td>₹110</td></tr><tr><td>Havells MCB 32A / Schneider</td><td>₹420</td></tr><tr><td>Polycab Wire (per metre)</td><td>₹22</td></tr>";
-      currentEstimate = "Product Estimate: Anchor Switch/Socket ₹85-250, Board ₹380, Regulator ₹280, Havells Fan ₹1450, Orient Fan ₹1350, LED ₹110, MCB ₹420, Polycab Wire ₹22/m. Repair charge NOT included - will tell on visit.";
-    }
-    document.getElementById("estimateBox").scrollIntoView({behavior:"smooth"});
-  }, 2800);
-}
-async function getMySlot(){
-  const date = document.getElementById("date").value; if(!date) return;
-  document.getElementById("slots").innerHTML = "Checking queue...";
-  try {
-    const res = await fetch(APPS_SCRIPT_URL + "?date=" + date);
-    const data = await res.json(); mySlotNumber = data.nextSlot;
-    document.getElementById("slots").innerHTML = "<div class='slot-box'><div style='font-size:14px;color:#c98a4b;'>FOR " + date + "</div><div class='slot-num'>YOU ARE SLOT " + mySlotNumber + "</div><div style='font-size:13px;color:#e8a87c;'>" + data.count + " people ahead of you</div></div>";
-  } catch(e){ mySlotNumber = 1; document.getElementById("slots").innerHTML = "Slot will be confirmed on WhatsApp"; }
-}
-async function handlePhotos(files){
-  if(!files || files.length === 0) return;
-  const remaining = MAX_PHOTOS - uploadedPhotoUrls.length;
-  if(remaining <= 0){ alert("Max 5 photos only."); return; }
-  const toUpload = Array.from(files).slice(0, remaining);
-  if(files.length > remaining) alert("Max 5 photos only. Uploading first " + remaining + " photos.");
-  isUploading = true; document.getElementById("bookBtn").disabled = true;
-  for(let i=0; i<toUpload.length; i++){
-    document.getElementById("bookBtn").textContent = "UPLOADING " + (uploadedPhotoUrls.length+1) + "/5... PLEASE WAIT";
-    document.getElementById("uploadStatus").textContent = "⏳ UPLOADING PHOTO " + (uploadedPhotoUrls.length+1) + "/5...";
-    const form = new FormData(); form.append("file", toUpload[i]); form.append("upload_preset", UPLOAD_PRESET);
-    try {
-      const res = await fetch("https://api.cloudinary.com/v1_1/" + CLOUD_NAME + "/image/upload", { method: "POST", body: form });
-      const data = await res.json(); if(data.secure_url){ uploadedPhotoUrls.push(data.secure_url); renderPreviews(); }
-    } catch(err){}
-  }
-  document.getElementById("uploadStatus").textContent = "✅ " + uploadedPhotoUrls.length + "/5 PHOTOS UPLOADED!";
-  isUploading = false; document.getElementById("bookBtn").disabled = false;
-  document.getElementById("bookBtn").textContent = "BOOK ME - PAY ₹50 & SEND ON WHATSAPP →";
-  if(uploadedPhotoUrls.length > 0 && document.getElementById("estimateBox").style.display === "none") showEstimate();
-}
-document.getElementById("photoCamera").onchange = (e) => { handlePhotos(e.target.files); e.target.value = ""; };
-document.getElementById("photoGallery").onchange = (e) => { handlePhotos(e.target.files); e.target.value = ""; };
-document.getElementById("payScreenshot").onchange = async (e) => {
-  const file = e.target.files[0]; if(!file) return;
-  document.getElementById("payShotPreview").src = URL.createObjectURL(file);
-  document.getElementById("payShotPreview").style.display = "block";
-  isPayShotUploading = true; document.getElementById("payShotStatus").textContent = "⏳ UPLOADING PAYMENT SCREENSHOT...";
-  const form = new FormData(); form.append("file", file); form.append("upload_preset", UPLOAD_PRESET);
-  try {
-    const res = await fetch("https://api.cloudinary.com/v1_1/" + CLOUD_NAME + "/image/upload", { method: "POST", body: form });
-    const data = await res.json();
-    if(data.secure_url){ payScreenshotUrl = data.secure_url; document.getElementById("payShotStatus").textContent = "✅ PAYMENT SCREENSHOT UPLOADED!"; }
-    else document.getElementById("payShotStatus").textContent = "❌ UPLOAD FAILED - Try again";
-  } catch(err){ document.getElementById("payShotStatus").textContent = "❌ UPLOAD FAILED - Check internet"; }
-  isPayShotUploading = false; checkPayProof();
-};
-function goToPay(){
-  if(isUploading){ alert("Photos are still uploading, please wait"); return; }
-  const date = document.getElementById("date").value;
-  const name = document.getElementById("name").value.trim();
-  const address = document.getElementById("address").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const desc = document.getElementById("desc").value.trim();
-  if(uploadedPhotoUrls.length === 0){ alert("Please upload at least 1 photo"); return; }
-  if(!desc){ alert("Please write Comment - what happened?"); return; }
-  if(!date || !name || !address || !phone){ alert("Please fill Date, Name, Address, Phone"); return; }
-  if(!mySlotNumber) getMySlot();
-  document.getElementById("paySlotNum").textContent = mySlotNumber || "";
-  document.getElementById("upiDisplay").textContent = UPI_ID;
-  document.getElementById("bookBtn").style.display = "none";
+function clearSaved(){ try{ localStorage.removeItem(SAVE_KEY); }catch(e){} }
+function restoreBooking(){
+  const d = loadState(); if(!d) return false;
+  currentType = d.type || "small"; mySlotNumber = d.slot || 0; uploadedPhotoUrls = d.photos || []; payScreenshotUrl = d.payShot || ""; currentEstimate = d.estimate || "";
+  document.getElementById("name").value = d.name || ""; document.getElementById("address").value = d.address || ""; document.getElementById("phone").value = d.phone || ""; document.getElementById("desc").value = d.desc || "";
+  if(d.date) document.getElementById("date").value = d.date;
+  if(d.wiringType && document.getElementById("wiringType")) document.getElementById("wiringType").value = d.wiringType;
+  if(d.utr) document.getElementById("utrInput").value = d.utr;
+  if(payScreenshotUrl){ document.getElementById("payShotPreview").src = payScreenshotUrl; document.getElementById("payShotPreview").style.display = "block"; document.getElementById("payShotStatus").textContent = "✅ PAYMENT SCREENSHOT RESTORED!"; }
+  renderPreviews();
+  if(mySlotNumber && d.date){ document.getElementById("slots").innerHTML = "<div class='slot-box'><div style='font-size:14px;color:#c98a4b;'>FOR " + d.date + "</div><div class='slot-num'>YOU ARE SLOT " + mySlotNumber + "</div><div style='font-size:13px;color:#e8a87c;'>Your slot is saved</div></div>"; document.getElementById("paySlotNum").textContent = mySlotNumber; }
+  if(currentEstimate){ document.getElementById("estimateBox").style.display = "block"; document.getElementById("loadingBox").style.display = "none"; document.getElementById("estimateResult").style.display = "block"; document.getElementById("priceText").textContent = currentType==="wiring" ? "ON VISIT - QUOTATION" : "₹85 - ₹1,450"; }
+  document.getElementById("formTitle").textContent = currentType === "small" ? "⚡ REPAIR" : "⚡ HOUSE WIRING";
+  document.getElementById("smallSection").style.display = currentType === "small" ? "block" : "none";
+  document.getElementById("wiringSection").style.display = currentType === "wiring" ? "block" : "none";
   checkPayProof();
-  showPage("pagePay");
+  return true;
 }
-async function confirmPaid(){
-  const utr = document.getElementById("utrInput").value.trim();
-  if(utr.length < 12){ alert("Please enter 12-digit UTR from GPay"); return; }
-  if(!payScreenshotUrl || isPayShotUploading){ alert("Payment screenshot still uploading / not uploaded"); return; }
-  const date = document.getElementById("date").value;
-  const name = document.getElementById("name").value.trim();
-  const address = document.getElementById("address").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const desc = document.getElementById("desc").value.trim();
-  if(!mySlotNumber) await getMySlot();
-  let problemText = currentType === "small" ? "Repair (Photo + Comment)" : document.getElementById("wiringType").value + " (House Wiring)";
-  const photoString = uploadedPhotoUrls.join(" | ");
-  try { await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify({ date: date, slot: mySlotNumber, name: name, phone: phone, address: address, problem: problemText + " | Comment: " + desc + " | " + currentEstimate + " | UTR: " + utr, photo: photoString + " | PAYMENT SCREENSHOT: " + payScreenshotUrl }) }); } catch(e){}
-  let msg = "⚡ NEW BOOKING - SLOT " + mySlotNumber + "\n\nType: " + (currentType === "small" ? "Repair" : "House Wiring") + "\nProblem: " + problemText + "\nComment: " + desc + "\n\n" + currentEstimate + "\n\n✅ BOOKING FEE ₹50 PAID\nUTR / Transaction ID: " + utr + "\nPay To: " + PAYEE_NAME + " (" + UPI_ID + ")\nDate: " + date + "\nSlot: " + mySlotNumber + "\nTotal Photos: " + uploadedPhotoUrls.length + "/5\n\nName: " + name + "\nAddress: " + address + "\nPhone: " + phone + "\n";
-  uploadedPhotoUrls.forEach((url, i) => { msg += "\nPhoto " + (i+1) + ": " + url; });
-  msg += "\n\nPayment Screenshot: " + payScreenshotUrl;
-  msg += "\n\nPlease check UTR in GPay and confirm my slot.";
-  window.open("https://wa.me/" + SHOP_WHATSAPP + "?text=" + encodeURIComponent(msg), "_blank");
-  showPage("pageDone");
-  setTimeout(() => { goHome(); }, 6000);
+function resumeBooking(){
+  if(restoreBooking()){
+    document.getElementById("restoreBanner").style.display = "block";
+    const d = loadState();
+    if(d && d.page === "pagePay"){ showPage("pagePay"); document.getElementById("bookBtn").style.display = "none"; }
+    else { showPage("pageForm"); document.getElementById("bookBtn").style.display = "block"; }
+    setTimeout(()=>{ document.getElementById("restoreBanner").style.display = "none"; }, 4000);
+  }
 }
-const today = new Date();
-const localToday = new Date(today.getTime() - today.getTimezoneOffset()*60000).toISOString().slice(0,10);
-document.getElementById("date").min = localToday;
-document.getElementById("date").value = localToday;
+// Save on every change + before leaving page + every 2 seconds
+document.addEventListener("input", saveState);
+document.addEventListener("change", saveState);
+window.addEventListener("pagehide", saveState);
+window.addEventListener("beforeunload", saveState);
+document.addEventListener("visibilitychange", ()=>{ if(document.hidden) saveState(); });
+setInterval(saveState, 2000);
+
+function showPage(id){ currentPage = id; document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); saveState(); }
+function goTo(type){ currentType = type; document.getElementById("formTitle").textContent = type === "small" ? "⚡ REPAIR" : "⚡ HOUSE WIRING"; document.getElementById("smallSection").style.display = type === "small" ? "block" : "none"; document.getElementById("wiringSection").style.display = type === "wiring" ? "block" : "none"; showPage("pageForm"); document.getElementById("bookBtn").style.display = "block"; }
+function goHome(){ document.getElementById("bookBtn").style.display = "none"; showPage("pageWelcome"); checkResumeBtn(); }
+function clearAndGoHome(){ clearSaved(); document.getElementById("name").value=""; document.getElementById("address").value=""; document.getElementById("phone").value=""; document.getElementById("desc").value=""; document.getElementById("previewGrid").innerHTML=""; document.getElementById("photoCount").textContent="(0/5)"; document.getElementById("uploadStatus").textContent=""; document.getElementById("estimateBox").style.display="none"; document.getElementById("slots").innerHTML='<p style="color:#c98a4b;font-size:13px;">Select date to get your Slot Number</p>'; document.getElementById("utrInput").value=""; document.getElementById("payShotPreview").style.display="none"; document.getElementById("payShotStatus").textContent=""; payScreenshotUrl=""; uploadedPhotoUrls=[]; mySlotNumber=0; currentEstimate=""; document.getElementById("bookBtn").style.display="none"; showPage("pageWelcome"); checkResumeBtn(); }
+function checkResumeBtn(){ const d = loadState(); document.getElementById("resumeBtn").style.display = (d && (d.photos.length>0 || d.name)) ? "block" : "none"; }
+function updatePhotoCount(){ document.getElementById("photoCount").textContent="("+uploadedPhotoUrls.length+"/5)"; }
+function removePhoto(index){ uploadedPhotoUrls.splice(index,1); renderPreviews(); saveState(); }
+function renderPreviews(){ const grid=document.getElementById("previewGrid"); grid.innerHTML=""; uploadedPhotoUrls.forEach((url,i)=>{ const div=document.createElement("div"); div.className="preview-wrap"; div.innerHTML='<span class="preview-num">'+(i+1)+'/5</span><button class="del-btn" onclick="removePhoto('+i+')">×</button><img src="'+url+'">'; grid.appendChild(div); }); updatePhotoCount(); }
+function copyUPI(){ if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(UPI_ID).then(()=>{ document.getElementById("copyMsg").textContent="✅ Copied! Now paste in GPay / PhonePe"; }); } else { const ta=document.createElement("textarea"); ta.value=UPI_ID; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta); document.getElementById("copyMsg").textContent="✅ Copied! Now paste in GPay / PhonePe"; } saveState(); }
+function checkPayProof(){ const utr=document.getElementById("utrInput").value.trim(); const btn=document.getElementById("confirmPayBtn"); if(utr.length>=12 && payScreenshotUrl){ btn.disabled=false; btn.textContent="✅ PAYMENT PROOF READY - SEND ON WHATSAPP"; } else { btn.disabled=true; btn.textContent="🔒 ENTER UTR ("+utr.length+"/12) + SCREENSHOT TO UNLOCK BOOKING"; } saveState(); }
+function showEstimate(){ document.getElementById("estimateBox").style.display="block"; document.getElementById("loadingBox").style.display="block"; document.getElementById("estimateResult").style.display="none"; setTimeout(()=>{ document.getElementById("loadingBox").style.display="none"; document.getElementById("estimateResult").style.display="block"; if(currentType==="wiring"){ document.getElementById("priceText").textContent="ON VISIT - QUOTATION"; document.getElementById("brandText").innerHTML="We use Polycab / Finolex Wires + Havells / Anchor Switches + Schneider MCB"; document.getElementById("estTable").innerHTML="<tr><td>Polycab Wire (90m)</td><td>₹1,450 - ₹2,100</td></tr><tr><td>Anchor Roma Switch</td><td>₹85</td></tr><tr><td>Havells MCB 32A</td><td>₹420</td></tr>"; currentEstimate="House Wiring - Product price on visit. Polycab Wire ₹1450-2100, Anchor Switch ₹85, Havells MCB ₹420"; } else { document.getElementById("priceText").textContent="₹85 - ₹1,450"; document.getElementById("brandText").innerHTML="Common Indian products you may need:"; document.getElementById("estTable").innerHTML="<tr><td>Anchor Roma Switch / Socket</td><td>₹85 - ₹250</td></tr><tr><td>Anchor Roma 6-Module Board</td><td>₹380</td></tr><tr><td>Havells / Anchor Regulator</td><td>₹280</td></tr><tr><td>Havells Ceiling Fan (1200mm)</td><td>₹1,450</td></tr><tr><td>Orient Ceiling Fan</td><td>₹1,350</td></tr><tr><td>Havells LED Bulb 9W</td><td>₹110</td></tr><tr><td>Havells MCB 32A / Schneider</td><td>₹420</td></tr><tr><td>Polycab Wire (per metre)</td><td>₹22</td></tr>"; currentEstimate="Product Estimate: Anchor Switch/Socket ₹85-250, Board ₹380, Regulator ₹280, Havells Fan ₹1450, Orient Fan ₹1350, LED ₹110, MCB ₹420, Polycab Wire ₹22/m. Repair charge NOT included - will tell on visit."; } saveState(); document.getElementById("estimateBox").scrollIntoView({behavior:"smooth"}); },2800); }
+async function getMySlot(){ const date=document.getElementById("date").value; if(!date) return; document.getElementById("slots").innerHTML="Checking queue..."; try{ const res=await fetch(APPS_SCRIPT_URL+"?date="+date); const data=await res.json(); mySlotNumber=data.nextSlot; document.getElementById("slots").innerHTML="<div class='slot-box'><div style='font-size:14px;color:#c98a4b;'>FOR "+date+"</div><div class='slot-num'>YOU ARE SLOT "+mySlotNumber+"</div><div style='font-size:13px;color:#e8a87c;'>"+data.count+" people ahead of you</div></div>"; }catch(e){ mySlotNumber=1; document.getElementById("slots").innerHTML="Slot will be confirmed on WhatsApp"; } saveState(); }
+async function handlePhotos(files){ if(!files||files.length===0) return; const remaining=MAX_PHOTOS-uploadedPhotoUrls.length; if(remaining<=0){ alert("Max 5 photos only."); return; } const toUpload=Array.from(files).slice(0,remaining); if(files.length>remaining) alert("Max 5 photos only. Uploading first "+remaining+" photos."); isUploading=true; document.getElementById("bookBtn").disabled=true; for(let i=0;i<toUpload.length;i++){ document.getElementById("bookBtn").textContent="UPLOADING "+(uploadedPhotoUrls.length+1)+"/5... PLEASE WAIT"; document.getElementById("uploadStatus").textContent="⏳ UPLOADING PHOTO "+(uploadedPhotoUrls.length+1)+"/5..."; const form=new FormData(); form.append("file",toUpload[i]); form.append("upload_preset",UPLOAD_PRESET); try{ const res=await fetch("https://api.cloudinary.com/v1_1/"+CLOUD_NAME+"/image/upload",{method:"POST",body:form}); const data=await res.json(); if(data.secure_url){ uploadedPhotoUrls.push(data.secure_url); renderPreviews(); saveState(); } }catch(err){} } document.getElementById("uploadStatus").textContent="✅ "+uploadedPhotoUrls.length+"/5 PHOTOS UPLOADED!"; isUploading=false; document.getElementById("bookBtn").disabled=false; document.getElementById("bookBtn").textContent="BOOK ME - PAY ₹50 & SEND ON WHATSAPP →"; if(uploadedPhotoUrls.length>0 && document.getElementById("estimateBox").style.display==="none") showEstimate(); saveState(); }
+document.getElementById("photoCamera").onchange=(e)=>{ handlePhotos(e.target.files); e.target.value=""; };
+document.getElementById("photoGallery").onchange=(e)=>{ handlePhotos(e.target.files); e.target.value=""; };
+document.getElementById("payScreenshot").onchange=async(e)=>{ const file=e.target.files[0]; if(!file) return; document.getElementById("payShotPreview").src=URL.createObjectURL(file); document.getElementById("payShotPreview").style.display="block"; isPayShotUploading=true; document.getElementById("payShotStatus").textContent="⏳ UPLOADING PAYMENT SCREENSHOT..."; const form=new FormData(); form.append("file",file); form.append("upload_preset",UPLOAD_PRESET); try{ const res=await fetch("https://api.cloudinary.com/v1_1/"+CLOUD_NAME+"/image/upload",{method:"POST",body:form}); const data=await res.json(); if(data.secure_url){ payScreenshotUrl=data.secure_url; document.getElementById("payShotStatus").textContent="✅ PAYMENT SCREENSHOT UPLOADED!"; } else document.getElementById("payShotStatus").textContent="❌ UPLOAD FAILED - Try again"; }catch(err){ document.getElementById("payShotStatus").textContent="❌ UPLOAD FAILED - Check internet"; } isPayShotUploading=false; checkPayProof(); saveState(); };
+function goToPay(){ if(isUploading){ alert("Photos are still uploading, please wait"); return; } const date=document.getElementById("date").value; const name=document.getElementById("name").value.trim(); const address=document.getElementById("address").value.trim(); const phone=document.getElementById("phone").value.trim(); const desc=document.getElementById("desc").value.trim(); if(uploadedPhotoUrls.length===0){ alert("Please upload at least 1 photo"); return; } if(!desc){ alert("Please write Comment - what happened?"); return; } if(!date||!name||!address||!phone){ alert("Please fill Date, Name, Address, Phone"); return; } if(!mySlotNumber) getMySlot(); document.getElementById("paySlotNum").textContent=mySlotNumber||""; document.getElementById("upiDisplay").textContent=UPI_ID; document.getElementById("bookBtn").style.display="none"; checkPayProof(); showPage("pagePay"); }
+async function confirmPaid(){ const utr=document.getElementById("utrInput").value.trim(); if(utr.length<12){ alert("Please enter 12-digit UTR from GPay"); return; } if(!payScreenshotUrl||isPayShotUploading){ alert("Payment screenshot still uploading / not uploaded"); return; } const date=document.getElementById("date").value; const name=document.getElementById("name").value.trim(); const address=document.getElementById("address").value.trim(); const phone=document.getElementById("phone").value.trim(); const desc=document.getElementById("desc").value.trim(); if(!mySlotNumber) await getMySlot(); let problemText=currentType==="small"?"Repair (Photo + Comment)":document.getElementById("wiringType").value+" (House Wiring)"; const photoString=uploadedPhotoUrls.join(" | "); try{ await fetch(APPS_SCRIPT_URL,{method:"POST",body:JSON.stringify({date:date,slot:mySlotNumber,name:name,phone:phone,address:address,problem:problemText+" | Comment: "+desc+" | "+currentEstimate+" | UTR: "+utr,photo:photoString+" | PAYMENT SCREENSHOT: "+payScreenshotUrl})}); }catch(e){} let msg="⚡ NEW BOOKING - SLOT "+mySlotNumber+"\n\nType: "+(currentType==="small"?"Repair":"House Wiring")+"\nProblem: "+problemText+"\nComment: "+desc+"\n\n"+currentEstimate+"\n\n✅ BOOKING FEE ₹50 PAID\nUTR / Transaction ID: "+utr+"\nPay To: "+PAYEE_NAME+" ("+UPI_ID+")\nDate: "+date+"\nSlot: "+mySlotNumber+"\nTotal Photos: "+uploadedPhotoUrls.length+"/5\n\nName: "+name+"\nAddress: "+address+"\nPhone: "+phone+"\n"; uploadedPhotoUrls.forEach((url,i)=>{ msg+="\nPhoto "+(i+1)+": "+url; }); msg+="\n\nPayment Screenshot: "+payScreenshotUrl; msg+="\n\nPlease check UTR in GPay and confirm my slot."; window.open("https://wa.me/"+SHOP_WHATSAPP+"?text="+encodeURIComponent(msg),"_blank"); showPage("pageDone"); }
+// Init - NO auto clear, restore if exists
+const today=new Date(); const localToday=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
+document.getElementById("date").min=localToday;
+const _saved = loadState();
+if(_saved && _saved.date){ document.getElementById("date").value=_saved.date; }
+else { document.getElementById("date").value=localToday; }
+checkResumeBtn();
+if(_saved && (_saved.page==="pagePay" || _saved.photos.length>0)){
+  // Don't auto-jump, just show resume button - user taps RESUME
+  document.getElementById("restoreBanner").style.display="none";
+}
 </script>
 </body>
-</html>
+  </html>
